@@ -121,13 +121,17 @@ const COUNTRY_EN_TO_CN = {
 
 // 全局变量
 let config = null
+let envVars = {} // 存储环境变量
 const requestTimes = {}
 
 /**
  * EdgeOne Pages Edge Function 入口
  */
 export async function onRequest(context) {
-  const { request } = context
+  const { request, env } = context
+  
+  // 保存环境变量供其他函数使用
+  envVars = env || {}
   
   // 处理 CORS 预检请求
   if (request.method === 'OPTIONS') {
@@ -383,6 +387,21 @@ function getPasswordStatus() {
 
 // ==================== CORS 处理 ====================
 
+/**
+ * 获取允许的跨域来源列表
+ * 优先级：环境变量 CORS_ALLOW_ORIGIN > 允许全部
+ * 环境变量格式：a.com,b.com
+ */
+function getCorsAllowList() {
+  // 从 context.env 读取环境变量
+  const corsOrigin = envVars.CORS_ALLOW_ORIGIN
+  if (corsOrigin) {
+    return corsOrigin.split(',').map(s => s.trim()).filter(Boolean)
+  }
+  // 没有设置则返回空数组，表示允许全部
+  return []
+}
+
 function handleCors(request) {
   return new Response(null, {
     status: 204,
@@ -403,19 +422,31 @@ function getCorsHeaders(request) {
 }
 
 function getAllowedOrigin(origin) {
+  // 始终允许本地开发
   const localhostRegex = /^https?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0)(:\d{1,5})?$/
   if (localhostRegex.test(origin)) {
     return origin
-  } else if (config && config.CORS_ALLOW_ORIGIN) {
-    const corsList = config.CORS_ALLOW_ORIGIN.split(',')
-    for (const cors of corsList) {
-      if (cors.replace(/\/$/, '') === origin) {
-        return origin
-      }
-    }
-    return ''
   }
-  return origin
+  
+  // 获取允许列表
+  const allowList = getCorsAllowList()
+  
+  // 如果没有配置允许列表，则允许全部
+  if (allowList.length === 0) {
+    return origin
+  }
+  
+  // 检查 origin 是否在允许列表中
+  const originHost = origin.replace(/^https?:\/\//, '').replace(/\/$/, '')
+  for (const allowed of allowList) {
+    const allowedHost = allowed.replace(/^https?:\/\//, '').replace(/\/$/, '')
+    if (originHost === allowedHost || origin.replace(/\/$/, '') === allowed.replace(/\/$/, '')) {
+      return origin
+    }
+  }
+  
+  // 不在允许列表中，返回空字符串（拒绝跨域）
+  return ''
 }
 
 // ==================== IP 和防护 ====================

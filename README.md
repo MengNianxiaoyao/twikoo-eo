@@ -37,15 +37,20 @@ Twikoo 的完整教程，参考 Twikoo 官方项目: https://github.com/twikoojs
    - 选择 GitHub 作为代码源
    - 关联本仓库
 
-3. **配置环境变量**
+3. **配置 KV 存储**
    - 在 EdgeOne Pages 控制台创建 KV 命名空间
    - 将 KV 命名空间绑定到项目，变量名设为：`TWIKOO_KV`
 
-4. **触发部署**
+5. **配置跨域（可选）**
+   - 在 EdgeOne Pages 控制台添加环境变量 `CORS_ALLOW_ORIGIN`
+   - 格式：`example.com,blog.example.com`（多个域名用逗号分隔）
+   - 不设置则允许所有域名访问
+
+6. **触发部署**
    - 推送代码到仓库，EdgeOne Pages 会自动触发部署。或者直接本地`edgeone pages link`、`edgeone pages deploy`部署。
    - 部署完成后，获取你的 EdgeOne Pages 地址作为 twikoo 的环境配置
 
-5. **前端配置**
+7. **前端配置**
    ```html
    <script>
      twikoo.init({
