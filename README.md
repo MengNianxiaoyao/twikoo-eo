@@ -35,7 +35,7 @@ Twikoo 的完整教程，参考 Twikoo 官方项目: https://github.com/twikoojs
    - 登录腾讯云 EdgeOne 控制台
    - 创建新的 Pages 项目
    - 选择 GitHub 作为代码源
-   - 关联本仓库
+   - 关联本仓库。或者直接下载本仓库，手动上传到 EdgeOne Pages 里（会自动触发部署）。
 
 3. **配置 KV 存储**
    - 在 EdgeOne Pages 控制台创建 KV 命名空间
@@ -47,7 +47,7 @@ Twikoo 的完整教程，参考 Twikoo 官方项目: https://github.com/twikoojs
    - 不设置则允许所有域名访问
 
 6. **触发部署**
-   - 推送代码到仓库，EdgeOne Pages 会自动触发部署。或者直接本地`edgeone pages link`、`edgeone pages deploy`部署。
+   - 三种方法触发不熟: ① Fork 代码到自己仓库，EdgeOne Pages 进行关联，后续会自动触发部署。② 直接本地安装 edgeone-cli 情况下，`edgeone pages link`、`edgeone pages deploy`部署。③ 手动上传代码到 EdgeOne Pages 里覆盖。
    - 部署完成后，获取你的 EdgeOne Pages 地址作为 twikoo 的环境配置
 
 7. **前端配置**
@@ -94,6 +94,9 @@ Twikoo 的完整教程，参考 Twikoo 官方项目: https://github.com/twikoojs
 - 邮件通知（支持 SendGrid 和 MailChannels）。
 - IP 获取正常（使用 EdgeOne 提供的 `eo-connecting-ip`）。
 - UA 获取、浏览器类型正常。
+
+不工作的功能:
+- IP 归属地显示（Node Function 函数有限，无法调用 [imaegoo/ip2region](https://github.com/imaegoo/ip2region) 实现归属地查询。
 
 KV 存储的评论:
 
