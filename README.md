@@ -94,9 +94,7 @@ Twikoo 的完整教程，参考 Twikoo 官方项目: https://github.com/twikoojs
 - 邮件通知（支持 SendGrid 和 MailChannels）。
 - IP 获取正常（使用 EdgeOne 提供的 `eo-connecting-ip`）。
 - UA 获取、浏览器类型正常。
-
-不工作的功能:
-- IP 归属地显示（Node Function 函数有限，无法调用 [imaegoo/ip2region](https://github.com/imaegoo/ip2region) 实现归属地查询。
+- IP 归属地查询正常。
 
 KV 存储的评论:
 
@@ -123,12 +121,20 @@ node build.cjs
 ```
 ├── edge-functions/
 │   └── api/
-│       └── kv.js          # Edge Function KV 数据库操作层
+│       └── kv.js              # Edge Function KV 数据库操作层
+│   └── api/kv.js              # Edge Function - KV 数据库操作
 ├── node-functions/
-│   └── index.js           # Node Function 主入口（处理评论逻辑）
-├── package.json           # 项目依赖配置
-├── build.cjs              # 构建检查脚本
-└── .cnb.yml               # CNB 环境配置（可选）
+│   ├── index.js               # Node Function 主入口（处理评论逻辑）
+│   ├── ip2region-searcher.js  # IP 归属地查询器（纯内存实现）
+│   └── ip2region-data.js      # IP 数据库（构建时自动生成）
+├── package.json               # 项目依赖配置
+├── build.cjs                  # 构建检查脚本
+└── .cnb.yml                   # CNB 环境配置（可选）
+│   ├── index.js            # Node Function - 评论业务逻辑
+│   ├── ip2region-searcher.js  # IP 归属地查询（纯内存）
+│   └── ip2region-data.js   # IP 数据库（构建时生成）
+├── build.cjs               # 构建脚本
+└── package.json
 ```
 
 **架构说明：**
