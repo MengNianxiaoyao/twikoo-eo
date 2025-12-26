@@ -6,6 +6,8 @@
 
 专为腾讯云 EdgeOne Pages 平台优化的 [Twikoo](https://github.com/twikoojs/twikoo) 评论系统后端。
 
+镜像仓库: [CNB](https://cnb.cool/Mintimate/code-nest/twikoo-eo)、[GitHub](https://github.com/Mintimate/twikoo-eo)
+
 **简洁** · **安全** · **免费**
 
 ## 特性
